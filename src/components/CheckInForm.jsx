@@ -8,13 +8,16 @@ const ROOMS = ['Room 1', 'Room 2', 'Room 3', 'Room 4', 'Room 5', 'Room 6']
 const ID_TYPES = ['Aadhar', 'Passport', 'Voter ID', 'Driving Licence', 'PAN']
 const PURPOSES = ['Work', 'Travel', 'Study', 'Medical', 'Family', 'Other']
 
+function todayStr() { return new Date().toISOString().slice(0, 10) }
+function plusDaysStr(n) { const d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10) }
+
 const EMPTY = {
   name: '', phone: '', purpose: '', id_type: 'Aadhar', id_number: '',
   room: '', monthly_rent: '', check_in: '', check_out: '',
   address: '', advance_paid: '',
 }
 
-export function CheckInForm({ open, onClose, editGuest = null, prefilledRoom = null }) {
+export function CheckInForm({ open, onClose, editGuest = null, prefilledRoom = null, prefilledDate = null }) {
   const { guests, addGuest, updateGuest } = useGuests()
   const { addToast } = useToast()
 
@@ -40,10 +43,18 @@ export function CheckInForm({ open, onClose, editGuest = null, prefilledRoom = n
         advance_paid: editGuest.advance_paid ?? '',
       })
     } else {
-      setForm({ ...EMPTY, room: prefilledRoom ?? '' })
+      // Smart defaults: today → +30 days (standard PG term)
+      setForm({
+        ...EMPTY,
+        room: prefilledRoom ?? '',
+        check_in: prefilledDate ?? todayStr(),
+        check_out: prefilledDate
+          ? (() => { const d = new Date(prefilledDate); d.setDate(d.getDate() + 30); return d.toISOString().slice(0, 10) })()
+          : plusDaysStr(30),
+      })
     }
     setErrors({})
-  }, [open, editGuest, prefilledRoom])
+  }, [open, editGuest, prefilledRoom, prefilledDate])
 
   // Rooms occupied by OTHER active guests (exclude the one being edited)
   const occupiedRooms = guests

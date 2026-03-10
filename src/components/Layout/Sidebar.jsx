@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, DoorOpen, Bell, Settings, X } from 'lucide-react'
+import { LayoutDashboard, Users, DoorOpen, Bell, Settings, X, CalendarRange } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 import { GUESTHOUSE } from '../../config'
 
@@ -6,6 +6,7 @@ const navItems = [
   { label: 'Dashboard', icon: LayoutDashboard, page: 'dashboard' },
   { label: 'Guest Registry', icon: Users, page: 'registry' },
   { label: 'Room Status', icon: DoorOpen, page: 'rooms' },
+  { label: 'Timeline', icon: CalendarRange, page: 'timeline' },
   { label: 'Reminders', icon: Bell, page: 'reminders' },
 ]
 

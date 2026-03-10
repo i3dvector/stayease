@@ -1,4 +1,4 @@
-import { Menu, LogOut } from 'lucide-react'
+import { Menu, LogOut, Plus } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
 import { Badge } from '../ui/Badge'
 
@@ -6,11 +6,12 @@ const PAGE_TITLES = {
   dashboard: 'Dashboard',
   registry: 'Guest Registry',
   rooms: 'Room Status',
+  timeline: 'Room Timeline',
   reminders: 'Reminders',
   settings: 'Settings',
 }
 
-export function Header({ currentPage, onMenuOpen }) {
+export function Header({ currentPage, onMenuOpen, onQuickCheckIn }) {
   const { user, role, signOut } = useAuth()
 
   return (
@@ -23,11 +24,18 @@ export function Header({ currentPage, onMenuOpen }) {
           <Menu size={20} />
         </button>
         <h1 className="text-base font-semibold text-gray-900">
-          {PAGE_TITLES[currentPage] ?? 'StayEase'}
+          {PAGE_TITLES[currentPage] ?? 'HK Flats'}
         </h1>
       </div>
 
       <div className="flex items-center gap-3">
+        <button
+          onClick={onQuickCheckIn}
+          className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-white bg-[#065F46] hover:bg-[#047857] rounded-lg transition-colors"
+        >
+          <Plus size={16} />
+          New Arrival
+        </button>
         <div className="hidden sm:flex items-center gap-2">
           <span className="text-sm text-gray-600">{user?.email}</span>
           <Badge variant={role === 'admin' ? 'success' : 'neutral'}>

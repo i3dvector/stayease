@@ -6,6 +6,7 @@ import { Login } from './components/Login'
 import { Dashboard } from './components/Dashboard'
 import { GuestRegistry } from './components/GuestRegistry'
 import { RoomBoard } from './components/RoomBoard'
+import { TapeChart } from './components/TapeChart'
 import { Reminders } from './components/Reminders'
 import { Settings } from './components/Settings'
 import { CheckInForm } from './components/CheckInForm'
@@ -16,6 +17,7 @@ function AppInner() {
   const [formOpen, setFormOpen] = useState(false)
   const [editGuest, setEditGuest] = useState(null)
   const [prefilledRoom, setPrefilledRoom] = useState(null)
+  const [prefilledDate, setPrefilledDate] = useState(null)
 
   if (loading) {
     return (
@@ -27,15 +29,17 @@ function AppInner() {
 
   if (!user) return <Login />
 
-  function openCheckIn(room = null) {
+  function openCheckIn(room = null, date = null) {
     setEditGuest(null)
     setPrefilledRoom(room)
+    setPrefilledDate(date)
     setFormOpen(true)
   }
 
   function openEdit(guest) {
     setEditGuest(guest)
     setPrefilledRoom(null)
+    setPrefilledDate(null)
     setFormOpen(true)
   }
 
@@ -43,12 +47,13 @@ function AppInner() {
     setFormOpen(false)
     setEditGuest(null)
     setPrefilledRoom(null)
+    setPrefilledDate(null)
   }
 
   const safePage = page === 'settings' && role !== 'admin' ? 'dashboard' : page
 
   return (
-    <Layout currentPage={safePage} onNavigate={setPage}>
+    <Layout currentPage={safePage} onNavigate={setPage} onQuickCheckIn={() => openCheckIn()}>
       {safePage === 'dashboard' && (
         <Dashboard onCheckIn={() => openCheckIn()} onEdit={openEdit} />
       )}
@@ -57,6 +62,9 @@ function AppInner() {
       )}
       {safePage === 'rooms' && (
         <RoomBoard onCheckIn={openCheckIn} />
+      )}
+      {safePage === 'timeline' && (
+        <TapeChart onCheckIn={openCheckIn} onEdit={openEdit} />
       )}
       {safePage === 'reminders' && (
         <Reminders />
@@ -70,6 +78,7 @@ function AppInner() {
         onClose={closeForm}
         editGuest={editGuest}
         prefilledRoom={prefilledRoom}
+        prefilledDate={prefilledDate}
       />
     </Layout>
   )

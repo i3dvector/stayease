@@ -1,5 +1,6 @@
 import { CheckCircle2, FileText } from 'lucide-react'
 import { useGuests } from '../hooks/useGuests'
+import { useRoomHousekeeping } from '../hooks/useRoomHousekeeping'
 import { balanceDue, formatDate, formatRupees } from '../utils/business'
 import { generateSlip } from '../utils/pdf'
 import { useToast } from './ui/Toast'
@@ -8,11 +9,38 @@ import { Skeleton } from './ui/Skeleton'
 
 const ROOMS = ['Room 1', 'Room 2', 'Room 3', 'Room 4', 'Room 5', 'Room 6']
 
+const HK_OPTIONS = [
+  { value: 'clean',        label: 'Clean',        dot: 'bg-emerald-500' },
+  { value: 'dirty',        label: 'Dirty',        dot: 'bg-red-500' },
+  { value: 'inspecting',   label: 'Inspecting',   dot: 'bg-yellow-400' },
+  { value: 'out_of_order', label: 'Out of Order', dot: 'bg-gray-400' },
+]
+
+function HKBadge({ status, room, onChange }) {
+  const opt = HK_OPTIONS.find(o => o.value === status) ?? HK_OPTIONS[0]
+  return (
+    <div className="relative inline-flex items-center">
+      <select
+        value={status}
+        onChange={e => onChange(room, e.target.value)}
+        title="Housekeeping status"
+        className="appearance-none pl-4 pr-2 py-0.5 text-xs border border-gray-200 rounded-full bg-white text-gray-600 cursor-pointer hover:border-gray-300 focus:outline-none focus:border-[#065F46]"
+        style={{ paddingLeft: '20px' }}
+      >
+        {HK_OPTIONS.map(o => (
+          <option key={o.value} value={o.value}>{o.label}</option>
+        ))}
+      </select>
+      <span className={`absolute left-2 w-2 h-2 rounded-full ${opt.dot} pointer-events-none`} />
+    </div>
+  )
+}
+
 export function RoomBoard({ onCheckIn }) {
-  const { guests, loading, settleBalance } = useGuests()
+  const { guests, loading: guestsLoading, settleBalance } = useGuests()
+  const { statuses, loading: hkLoading, updateStatus } = useRoomHousekeeping()
   const { addToast } = useToast()
 
-  // Map room name → current active guest
   const occupiedMap = {}
   guests.forEach(g => {
     if (g.status === 'checked-in') occupiedMap[g.room] = g
@@ -27,7 +55,7 @@ export function RoomBoard({ onCheckIn }) {
     }
   }
 
-  if (loading) {
+  if (guestsLoading || hkLoading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {ROOMS.map(r => (
@@ -45,26 +73,31 @@ export function RoomBoard({ onCheckIn }) {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {ROOMS.map(room => {
         const guest = occupiedMap[room]
+        const hkStatus = statuses[room] ?? 'clean'
+
         if (guest) {
           const balance = balanceDue(guest)
           return (
             <div key={room} className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm">
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">{room}</span>
                 <Badge variant={balance > 0 ? 'danger' : 'success'}>
                   {balance > 0 ? 'Balance Due' : 'Settled'}
                 </Badge>
               </div>
               <div className="font-semibold text-gray-900 mb-0.5">{guest.name}</div>
-              <div className="text-sm text-gray-500 mb-1">
+              <div className="text-sm text-gray-500 mb-2">
                 Check-out: {formatDate(guest.check_out)}
               </div>
               {balance > 0 && (
-                <div className="text-sm text-red-600 font-medium mb-3">
+                <div className="text-sm text-red-600 font-medium mb-2">
                   Balance: {formatRupees(balance)}
                 </div>
               )}
-              <div className="flex gap-2 mt-3">
+              <div className="mb-3">
+                <HKBadge status={hkStatus} room={room} onChange={updateStatus} />
+              </div>
+              <div className="flex gap-2">
                 <button
                   onClick={() => generateSlip(guest)}
                   className="flex-1 flex items-center justify-center gap-1.5 py-1.5 text-xs font-medium text-gray-600 border border-gray-300 rounded hover:bg-gray-50 transition-colors"
@@ -87,9 +120,12 @@ export function RoomBoard({ onCheckIn }) {
         // Available room
         return (
           <div key={room} className="bg-white rounded-lg border border-dashed border-gray-300 p-5 shadow-sm">
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">{room}</span>
               <Badge variant="success">Available</Badge>
+            </div>
+            <div className="mb-3">
+              <HKBadge status={hkStatus} room={room} onChange={updateStatus} />
             </div>
             <div className="text-sm text-gray-400 mb-4">No guest currently assigned</div>
             <button
