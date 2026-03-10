@@ -1,0 +1,2 @@
+# stayease
+Guesthouse CRM
