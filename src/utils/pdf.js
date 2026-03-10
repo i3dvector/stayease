@@ -1,5 +1,6 @@
 import { jsPDF } from 'jspdf'
 import { balanceDue, formatDate, formatRupees, stayDuration, totalRent } from './business'
+import { GUESTHOUSE } from '../config'
 
 export function generateSlip(guest) {
   const doc = new jsPDF({ unit: 'mm', format: 'a4' })
@@ -12,7 +13,7 @@ export function generateSlip(guest) {
   doc.setTextColor(255, 255, 255)
   doc.setFont('helvetica', 'bold')
   doc.setFontSize(18)
-  doc.text('StayEase Guesthouse', margin, 13)
+  doc.text(GUESTHOUSE.name, margin, 13)
   doc.setFontSize(10)
   doc.setFont('helvetica', 'normal')
   doc.text('Check-In Receipt', margin, 21)
@@ -100,8 +101,8 @@ export function generateSlip(guest) {
   doc.setFontSize(8)
   doc.setTextColor(107, 114, 128)
   doc.setFont('helvetica', 'normal')
-  doc.text('StayEase Guesthouse, Chennai, Tamil Nadu', pageW / 2, 277, { align: 'center' })
+  doc.text(`${GUESTHOUSE.name}, ${GUESTHOUSE.city}`, pageW / 2, 277, { align: 'center' })
   doc.text('This is a computer-generated receipt.', pageW / 2, 283, { align: 'center' })
 
-  doc.save(`StayEase-${guest.name.replace(/\s+/g, '-')}-${receiptNo}.pdf`)
+  doc.save(`${GUESTHOUSE.name.replace(/\s+/g, '-')}-${guest.name.replace(/\s+/g, '-')}-${receiptNo}.pdf`)
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { DoorOpen } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
+import { GUESTHOUSE } from '../config'
 
 export function Login() {
   const { signIn } = useAuth()
@@ -31,8 +32,8 @@ export function Login() {
             <DoorOpen size={20} className="text-white" />
           </div>
           <div>
-            <div className="text-lg font-bold text-gray-900">StayEase</div>
-            <div className="text-xs text-gray-400">Guesthouse CRM</div>
+            <div className="text-lg font-bold text-gray-900">{GUESTHOUSE.name}</div>
+            <div className="text-xs text-gray-400">{GUESTHOUSE.tagline}</div>
           </div>
         </div>
 

@@ -1,5 +1,6 @@
 import { LayoutDashboard, Users, DoorOpen, Bell, Settings, X } from 'lucide-react'
 import { useAuth } from '../../hooks/useAuth'
+import { GUESTHOUSE } from '../../config'
 
 const navItems = [
   { label: 'Dashboard', icon: LayoutDashboard, page: 'dashboard' },
@@ -24,8 +25,8 @@ export function Sidebar({ currentPage, onNavigate, mobileOpen, onClose }) {
             <DoorOpen size={16} className="text-white" />
           </div>
           <div>
-            <div className="text-sm font-bold text-gray-900 leading-tight">StayEase</div>
-            <div className="text-xs text-gray-400">Guesthouse CRM</div>
+            <div className="text-sm font-bold text-gray-900 leading-tight">{GUESTHOUSE.name}</div>
+            <div className="text-xs text-gray-400">{GUESTHOUSE.tagline}</div>
           </div>
         </div>
       </div>
