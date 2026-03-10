@@ -1,0 +1,11 @@
+# Supabase local config (for supabase CLI)
+# Run: supabase init (if starting fresh)
+
+[project]
+# Your Supabase project reference from Settings → General
+# ref = "your-project-ref"
+
+[functions.whatsapp-reminder]
+# Secrets required by the WhatsApp Edge Function
+# Set via: supabase secrets set META_ACCESS_TOKEN=your_token META_PHONE_NUMBER_ID=your_id
+verify_jwt = true
