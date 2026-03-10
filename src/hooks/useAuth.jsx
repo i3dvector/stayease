@@ -9,11 +9,12 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
 
   async function fetchRole(userId) {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('user_roles')
       .select('role')
       .eq('id', userId)
       .single()
+    if (error) console.error('fetchRole error:', error.message)
     setRole(data?.role ?? 'staff')
   }
 
