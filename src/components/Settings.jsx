@@ -76,10 +76,10 @@ export function Settings() {
   return (
     <div className="space-y-6 max-w-2xl">
       {/* Staff Management */}
-      <section className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-200">
-          <h2 className="text-base font-semibold text-gray-900">Staff Management</h2>
-          <p className="text-sm text-gray-500 mt-0.5">Invite employees. Staff can manage guests but cannot access settings or delete records.</p>
+      <section className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="px-5 py-4 border-b border-slate-200">
+          <h2 className="text-sm font-semibold text-slate-900">Staff Management</h2>
+          <p className="text-sm text-slate-500 mt-0.5">Invite employees. Staff can manage guests but cannot access settings or delete records.</p>
         </div>
 
         <div className="p-5 space-y-4">
@@ -90,11 +90,11 @@ export function Settings() {
               value={inviteEmail}
               onChange={e => setInviteEmail(e.target.value)}
               placeholder="employee@email.com"
-              className="flex-1 h-10 px-3 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#065F46] focus:ring-2 focus:ring-emerald-500/20"
+              className="flex-1 h-10 px-3 border border-slate-300 rounded-lg text-sm bg-slate-50 focus:bg-white focus:outline-none focus:border-[#065F46] focus:ring-2 focus:ring-emerald-500/20"
             />
             <button
               type="submit"
-              className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white bg-[#065F46] hover:bg-[#047857] rounded transition-colors"
+              className="flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-white bg-[#065F46] hover:bg-[#047857] rounded-lg transition-colors"
             >
               <UserPlus size={15} />
               Show Instructions
@@ -110,11 +110,11 @@ export function Settings() {
           ) : staffList.length === 0 ? (
             <div className="text-sm text-gray-400 py-4 text-center">No staff members yet.</div>
           ) : (
-            <div className="divide-y divide-gray-100 border border-gray-200 rounded-lg overflow-hidden">
+            <div className="divide-y divide-slate-100 border border-slate-200 rounded-xl overflow-hidden">
               {staffList.map(member => (
                 <div key={member.id} className="flex items-center justify-between px-4 py-3">
                   <div>
-                    <div className="text-sm font-medium text-gray-900">{member.email}</div>
+                    <div className="text-sm font-semibold text-slate-900">{member.email}</div>
                     <Badge variant={member.role === 'admin' ? 'success' : 'neutral'}>{member.role}</Badge>
                   </div>
                   {member.role !== 'admin' && (
@@ -134,34 +134,34 @@ export function Settings() {
       </section>
 
       {/* Supabase Configuration */}
-      <section className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-200">
-          <h2 className="text-base font-semibold text-gray-900">Supabase Configuration</h2>
-          <p className="text-sm text-gray-500 mt-0.5">These values are saved locally for reference. Set them as Vercel environment variables for production.</p>
+      <section className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="px-5 py-4 border-b border-slate-200">
+          <h2 className="text-sm font-semibold text-slate-900">Supabase Configuration</h2>
+          <p className="text-sm text-slate-500 mt-0.5">These values are saved locally for reference. Set them as Vercel environment variables for production.</p>
         </div>
         <div className="p-5 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Project URL</label>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Project URL</label>
             <input
               value={supabaseUrl}
               onChange={e => setSupabaseUrl(e.target.value)}
-              className="w-full h-10 px-3 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#065F46]"
+              className="w-full h-10 px-3 border border-slate-300 rounded-lg text-sm bg-slate-50 focus:bg-white focus:outline-none focus:border-[#065F46]"
               placeholder="https://xyz.supabase.co"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Anon Public Key</label>
+            <label className="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Anon Public Key</label>
             <input
               value={supabaseKey}
               onChange={e => setSupabaseKey(e.target.value)}
-              className="w-full h-10 px-3 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#065F46]"
+              className="w-full h-10 px-3 border border-slate-300 rounded-lg text-sm bg-slate-50 focus:bg-white focus:outline-none focus:border-[#065F46]"
               placeholder="eyJ…"
               type="password"
             />
           </div>
           <button
             onClick={saveSupabaseConfig}
-            className="px-4 py-2 text-sm font-medium text-white bg-[#065F46] hover:bg-[#047857] rounded transition-colors"
+            className="px-4 py-2 text-sm font-semibold text-white bg-[#065F46] hover:bg-[#047857] rounded-lg transition-colors"
           >
             Save Config
           </button>
@@ -169,14 +169,14 @@ export function Settings() {
       </section>
 
       {/* Data Management */}
-      <section className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-200">
-          <h2 className="text-base font-semibold text-gray-900">Data Management</h2>
+      <section className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="px-5 py-4 border-b border-slate-200">
+          <h2 className="text-sm font-semibold text-slate-900">Data Management</h2>
         </div>
         <div className="p-5 space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-sm font-medium text-gray-900">Total Guest Records</div>
+              <div className="text-sm font-semibold text-slate-900">Total Guest Records</div>
               <div className="text-2xl font-bold text-gray-900 mt-1">{guests.length}</div>
             </div>
           </div>
@@ -184,13 +184,13 @@ export function Settings() {
           <div className="flex flex-wrap gap-3">
             <button
               onClick={handleExportBackup}
-              className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-slate-700 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors"
             >
               <Download size={15} /> Export Backup (JSON)
             </button>
             <button
               onClick={() => setConfirmReset(true)}
-              className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-red-600 border border-red-300 rounded hover:bg-red-50 transition-colors"
+              className="flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-red-600 border border-red-300 rounded-lg hover:bg-red-50 transition-colors"
             >
               <RefreshCw size={15} /> Reset All Data
             </button>

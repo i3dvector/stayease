@@ -62,9 +62,9 @@ export function Reminders() {
   return (
     <div className="space-y-6">
       {/* Pending Payments */}
-      <section className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-200 flex items-center gap-2">
-          <h2 className="text-base font-semibold text-gray-900">Pending Payments</h2>
+      <section className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="px-5 py-4 border-b border-slate-200 flex items-center gap-2">
+          <h2 className="text-sm font-semibold text-slate-900">Pending Payments</h2>
           {pendingPayments.length > 0 && (
             <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-red-100 text-red-700 text-xs font-bold">
               {pendingPayments.length}
@@ -75,9 +75,9 @@ export function Reminders() {
         {loading ? (
           <table className="w-full"><tbody>{[...Array(3)].map((_, i) => <SkeletonRow key={i} />)}</tbody></table>
         ) : pendingPayments.length === 0 ? (
-          <div className="py-10 text-center text-sm text-gray-400">No pending payments. All caught up!</div>
+          <div className="py-10 text-center text-sm text-slate-400">No pending payments. All caught up!</div>
         ) : (
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-slate-100">
             {pendingPayments.map(guest => {
               const days = daysUntilCheckout(guest)
               const balance = balanceDue(guest)
@@ -89,15 +89,15 @@ export function Reminders() {
                       {countdownLabel(days)}
                     </div>
                     <div className="min-w-0">
-                      <div className="font-medium text-gray-900">{guest.name}</div>
-                      <div className="text-xs text-gray-500">{guest.room} · {guest.phone}</div>
+                      <div className="font-semibold text-slate-900">{guest.name}</div>
+                      <div className="text-xs text-slate-500">{guest.room} · {guest.phone}</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-sm font-semibold text-red-600">{formatRupees(balance)}</span>
                     <button
                       onClick={() => handleWhatsApp(guest)}
-                      className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-[#065F46] bg-emerald-50 border border-emerald-200 rounded hover:bg-emerald-100 transition-colors"
+                      className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-[#065F46] bg-emerald-50 border border-emerald-200 rounded-lg hover:bg-emerald-100 transition-colors"
                     >
                       <MessageCircle size={13} /> Send WA
                     </button>
@@ -116,17 +116,17 @@ export function Reminders() {
       </section>
 
       {/* Upcoming Checkouts */}
-      <section className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-200">
-          <h2 className="text-base font-semibold text-gray-900">Upcoming Check-Outs <span className="text-sm text-gray-400 font-normal">(next 7 days)</span></h2>
+      <section className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="px-5 py-4 border-b border-slate-200">
+          <h2 className="text-sm font-semibold text-slate-900">Upcoming Check-Outs <span className="text-sm text-slate-400 font-normal">(next 7 days)</span></h2>
         </div>
 
         {loading ? (
           <table className="w-full"><tbody>{[...Array(2)].map((_, i) => <SkeletonRow key={i} />)}</tbody></table>
         ) : upcomingCheckouts.length === 0 ? (
-          <div className="py-10 text-center text-sm text-gray-400">No check-outs in the next 7 days.</div>
+          <div className="py-10 text-center text-sm text-slate-400">No check-outs in the next 7 days.</div>
         ) : (
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-slate-100">
             {upcomingCheckouts.map(guest => {
               const days = daysUntilCheckout(guest)
               return (
@@ -136,14 +136,14 @@ export function Reminders() {
                       {countdownLabel(days)}
                     </div>
                     <div>
-                      <div className="font-medium text-gray-900">{guest.name}</div>
-                      <div className="text-xs text-gray-500">{guest.room} · Out: {formatDate(guest.check_out)}</div>
+                      <div className="font-semibold text-slate-900">{guest.name}</div>
+                      <div className="text-xs text-slate-500">{guest.room} · Out: {formatDate(guest.check_out)}</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => generateSlip(guest)}
-                      className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-gray-600 border border-gray-300 rounded hover:bg-gray-50 transition-colors"
+                      className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                     >
                       <FileText size={13} /> Slip
                     </button>
